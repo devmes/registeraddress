@@ -44,6 +44,27 @@ class AddressRepository extends Repository
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
      *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
      */
+    public function findOneByEmail($email)
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setLanguageOverlayMode(false);
+        $query->getQuerySettings()->setLanguageMode('content_fallback');
+
+        $query->matching(
+            $query->equals('email', $email )
+        );
+
+        return $query->execute()->getFirst();
+    }
+
+    /**
+     * Returns an Object by email address and ignores hidden field.
+     *
+     * @param string $email
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
+     *         all objects, will be empty if no objects are found, will be an array if raw query results are enabled
+     */
     public function findOneByEmailIgnoreHidden($email)
     {
         $query = $this->createQuery();
